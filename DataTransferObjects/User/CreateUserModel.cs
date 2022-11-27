@@ -19,7 +19,7 @@ namespace DataTransferObjects.User
         public string State { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
-        public string PostalCode { get; set; }
+        public string PostCode { get; set; }
         public string CountryCode { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace Queries.User
 {
     internal class GetAllUsersQuery : IRequest<Result<List<UserDto>>>
     {
-        public sealed class Handler : ReadStackBaseHandler<GetAllUsersQuery, Result<List<UserDto>>>
+        public sealed class Handler : QueriesBaseHandler<GetAllUsersQuery, Result<List<UserDto>>>
         {
             private readonly IUserRepository _userRepo;
-            private readonly IMapper _mapper;            
+            private readonly IMapper _mapper;
 
             public Handler(IMapper mapper, IUserRepository userRepo)
             {
@@ -25,15 +25,10 @@ namespace Queries.User
             }
             protected override Result<List<UserDto>> Handle(GetAllUsersQuery request)
             {
-                var users = new List<UserDto>
-                {
-                    new UserDto { UserId = 1, FirstName = "Paolo", Email="paolo@cmcmarkets.com" },
-                    new UserDto { UserId = 2, FirstName = "David", Email="david@cmcmarkets.com" },
-                    new UserDto { UserId = 3, FirstName = "James", Email="james@cmcmarkets.com" }
-                };
-                return Result.OnSuccess(users);
+                var usersDb = _userRepo.GetAll();
+                var mapped = _mapper.Map<List<UserDto>>(usersDb);                
+                return Result.OnSuccess(mapped);
             }
-
         }
     }
 }

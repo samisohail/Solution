@@ -1,4 +1,6 @@
 ﻿using DataAccess.Contract;
+using DataStore.CustomMappers;
+using DataStore.DbEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +11,22 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("Web")]
 namespace DataAccess.Implementation
 {
-    internal class UserRepository : IUserRepository
+    internal class UserRepository : BaseRepository<User>, IUserRepository
     {
+        public UserRepository(SolutionDbContext dbContext, Serilog.ILogger logger) : base(dbContext, logger)
+        {
+
+        }
         public void Create()
         {
-            throw new NotImplementedException();
+
         }
 
-        public void Get()
+        public IEnumerable<Domain.User.User> GetAll()
         {
-            throw new NotImplementedException();
+            var users = base.FindAll().ToList();
+            var mapped = UserMapping.MapToUser(users);
+            return mapped;
         }
     }
 }

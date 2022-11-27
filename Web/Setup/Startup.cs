@@ -19,6 +19,8 @@ using AutoMapper;
 using Queries;
 using System.Xml;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using DataStore.DbEntities;
 
 namespace Web.Setup
 {
@@ -53,7 +55,7 @@ namespace Web.Setup
             });
 
             // register MediatR
-            services.AddMediatR(typeof(ReadSample).Assembly, typeof(CommandBaseHandler).Assembly);
+            services.AddMediatR(typeof(ReadSample).Assembly, typeof(CommandSample).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipeline<,>));
 
             services.AddSwaggerGen(setup =>
@@ -105,9 +107,18 @@ namespace Web.Setup
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
+
+            services.AddDbContext<SolutionDbContext>(options =>
+            {
+                var connectionString = Configuration.GetValue<string>("ConnectionStrings:SolutionDB");
+                var timeout = Configuration.GetValue<int>("DatabaseTimeoutInSeconds");
+                options.UseSqlServer(connectionString, contextOptionsBuilder =>  contextOptionsBuilder.CommandTimeout(timeout));
+            });
+
             // services registration
             services.AddScoped<ITokenHelper, JwtTokenHelper>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             ///////////////////////////////////////////////////////////////////////////////////////////////////
             
             services.AddAutoMapper(typeof(QueriesAutomapper).Assembly, typeof(CommandsAutomapper).Assembly);
@@ -124,7 +135,7 @@ namespace Web.Setup
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             // app.UseRouting();
 
             app.UseAuthentication();

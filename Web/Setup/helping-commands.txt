@@ -1,0 +1,4 @@
+﻿Scaffold-DbContext Server="LAPTOP-RL1NE58R\SQLEXPRESS; Initial Catalog=SolutionDB;Integrated Security=True; Encrypt=False" -Provider Microsoft.EntityFrameworkCore.SqlServer -OutputDir Entities
+
+// particular tables only
+Scaffold-DbContext "Server=LAPTOP-RL1NE58R\SQLEXPRESS; Initial Catalog=SolutionDB;Integrated Security=True; Encrypt=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Tables "Blog","Post" -ContextDir Context -Context BlogContext -ContextNamespace New.Namespace

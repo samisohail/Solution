@@ -25,6 +25,8 @@ namespace DataTransferObjects
 
         public static Result OnFail(string message) => new Result(false, message);
         public static Result<T> OnSuccess<T>(T value) => new Result<T>(value, true, null);
+        public static Result OK() => new (true, "OK");
+        public static Result Fail(string message) => new (false, message);
     }
     public class Result<T> : Result
     {

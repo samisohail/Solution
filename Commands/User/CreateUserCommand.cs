@@ -1,5 +1,6 @@
 ﻿using DataTransferObjects;
 using DataTransferObjects.User;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,10 @@ namespace Commands.User
         public CreateUserModel CreateUserModel;
         internal class Handler : CommandBaseHandler<CreateUserCommand, Result<CreateUserResponse>>
         {
-            
+            protected override Result<CreateUserResponse> Handle(CreateUserCommand request)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
